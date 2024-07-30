@@ -1,0 +1,41 @@
+import java.util.ArrayList;
+import java.util.List;
+
+public class Solution {
+    // DO NOT MODIFY THE LIST. IT IS READ ONLY
+    public ArrayList<Integer> repeatedNumber(final List<Integer> A) {
+        int n = A.size();
+        
+        // Step 1: Calculate the expected sum and sum of squares for numbers from 1 to n
+        long sumN = (long) n * (n + 1) / 2;
+        long sumSqN = (long) n * (n + 1) * (2 * n + 1) / 6;
+        
+        // Step 2: Calculate the actual sum and sum of squares from the array
+        long sum = 0;
+        long sumSq = 0;
+        for (int num : A) {
+            sum += num;
+            sumSq += (long) num * num;
+        }
+        
+        // Step 3: Calculate the differences
+        long diffSum = sumN - sum; // B - A
+        long diffSqSum = sumSqN - sumSq; // B^2 - A^2
+        
+        // Step 4: Solve the equations
+        // diffSqSum = B^2 - A^2 = (B - A)(B + A)
+        // diffSqSum / diffSum = B + A
+        long sumAB = diffSqSum / diffSum;
+        
+        // Step 5: Find the repeating and missing numbers
+        long repeatingNumber = (sumAB - diffSum) / 2;
+        long missingNumber = sumAB - repeatingNumber;
+        
+        ArrayList<Integer> result = new ArrayList<>();
+        result.add((int) repeatingNumber);
+        result.add((int) missingNumber);
+        
+        return result;
+    }
+}
+
